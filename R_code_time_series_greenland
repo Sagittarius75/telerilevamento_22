@@ -9,7 +9,7 @@ setwd("C:/lab/greenland") # Windows
 lst2000 <- raster("lst_2000.tif")
 lst2000
 
-# Excercise: inport all the data
+# Excercise: import all the data
 
 lst2005 <- raster("lst_2005.tif")
 lst2010 <- raster("lst_2010.tif")
@@ -37,5 +37,76 @@ plot(tgr, col=cl)
 plot(tgr[[1]], col=cl)
 
 plotRGB(tgr, r=1, g=2, b=3, stretch="lin")
+
+#######################
+#### Esample 2: NO2 decrease during the lockdown period
+#######################
+
+# setwd("~/lab/en") # Linux
+setwd("C:/lab/en") # Windows
+# setwd("/Users/name/Desktop/lab/en") # Mac 
+
+en01 <- raster("EN_0001.png")
+
+cl <- colorRampPalette(c('red','orange','yellow'))(100) # 
+plot(en01, col=cl)
+
+en13 <- raster("EN_0013.png")
+plot(en13, col=cl)
+
+par(mfrow=c(2,1))
+plot(en01, col=cl)
+plot(en13, col=cl)
+
+# Let's import the whole set (altogether)
+
+# Exercise: import the whole as in the Greenland exxam
+# by the following steps: list.files, lapply, stack
+
+# import one by one, it takes a long process
+en01 <- raster("EN_0001.png")
+en02 <- raster("EN_0002.png")
+en03 <- raster("EN_0003.png")
+en04 <- raster("EN_0004.png")
+en05 <- raster("EN_0005.png")
+en06 <- raster("EN_0006.png")
+en07 <- raster("EN_0007.png")
+en08 <- raster("EN_0008.png")
+en09 <- raster("EN_0009.png")
+en10 <- raster("EN_0010.png")
+en11 <- raster("EN_0011.png")
+en12 <- raster("EN_0012.png")
+en13 <- raster("EN_0013.png")
+
+# Import the whole set altogether
+rlist <- list.files(pattern="EN")
+rlist
+rimp <- lapply(rlist, raster)
+rimp
+
+en <- stack(rimp)
+en
+plot(en, col=cl)
+
+# Exercise: plot EN01 beisdes EN13
+par(mfrow=c(1,2))
+plot(en[[1]], col=cl)
+plot(en[[13]], col=cl)
+
+# or
+en113 <- stack(en[[1]], en[[13]])
+plot(en113, col=cl)
+
+# let's make the difference
+difen <- en[[1]] - en[[13]]
+cldif <- colorRampPalette(c('blue','white','red'))(100) # 
+plot(difen, col=cldif)
+
+
+
+
+
+
+
 
 
