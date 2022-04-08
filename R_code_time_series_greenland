@@ -42,6 +42,8 @@ plotRGB(tgr, r=1, g=2, b=3, stretch="lin")
 #### Esample 2: NO2 decrease during the lockdown period
 #######################
 
+library(raster)
+
 # setwd("~/lab/en") # Linux
 setwd("C:/lab/en") # Windows
 # setwd("/Users/name/Desktop/lab/en") # Mac 
@@ -101,6 +103,21 @@ plot(en113, col=cl)
 difen <- en[[1]] - en[[13]]
 cldif <- colorRampPalette(c('blue','white','red'))(100) # 
 plot(difen, col=cldif)
+
+# plotRGB of three files together
+plotRGB(en, r=1, g=7, b=13, stretch="lin")
+plotRGB(en, r=1, g=7, b=13, stretch="hist")
+
+
+
+#######################
+#### Excercise Source Function
+#######################
+
+# create a file with a text editor, copying a code, save it as inputcode2.r in C:/lab
+library(raster)
+setwd("C:/lab")
+source("inputcode2.r")
 
 
 
