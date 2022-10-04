@@ -11,7 +11,7 @@ cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
 # Import the whole set altogether
 rlist1999 <- list.files(pattern="LE07")
 rlist1999
-import1999 <- lapply(rlist, raster)
+import1999 <- lapply(rlist1999, raster)
 import1999
 
 tgr1999 <- stack(import1999)
