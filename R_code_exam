@@ -2,9 +2,9 @@
 
 library(raster)
 
-# setwd("~/telerilevamento_exam") # Linux
-setwd("C:/telerilevamento_exam") # Windows
-# setwd("/Users/name/Desktop/telerilevamento_exam") # Mac 
+# setwd("~/telerilevamento_exam/1999_2022_02") # Linux
+setwd("C:/telerilevamento_exam/1999_2022_02") # Windows
+# setwd("/Users/name/Desktop/telerilevamento_exam/1999_2022_02") # Mac 
 
 cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
 
@@ -17,10 +17,20 @@ import1999
 tgr1999 <- stack(import1999)
 tgr1999
 
-plot(tgr1999, col=cl)
-plot(tgr1999[[1]], col=cl)
+rlist2022 <- list.files(pattern="LC08_L2SP_188034_2022")
+rlist2022
+import2022 <- lapply(rlist2022, raster)
+import2022
 
-plotRGB(tgr1999, r=1, g=2, b=3, stretch="lin")
+tgr2022 <- stack(import2022)
+tgr2022
+
+# plot(tgr1999, col=cl)
+# plot(tgr1999[[1]], col=cl)
+
+par(mfrow=c(1,2))
+plotRGB(tgr1999, 4, 2, 1, stretch="lin")
+plotRGB(tgr2022, 4, 2, 1, stretch="lin")
 
 #######################
 #### Esample 2: NO2 decrease during the lockdown period
