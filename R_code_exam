@@ -9,13 +9,45 @@ setwd("C:/telerilevamento_exam/1999_2022_02") # Windows
 cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
 
 # Import the whole set altogether
-rlist1999 <- list.files(pattern="LE07")
+rlist1999 <- list.files(pattern="LE07_L2SP_188034_1999")
 rlist1999
 import1999 <- lapply(rlist1999, raster)
 import1999
 
 tgr1999 <- stack(import1999)
 tgr1999
+
+rlist2003 <- list.files(pattern="LT05_L2SP_188034_2003")
+rlist2003
+import2003 <- lapply(rlist2003, raster)
+import2003
+
+tgr2003 <- stack(import2003)
+tgr2003
+
+rlist2008 <- list.files(pattern="LT05_L2SP_188034_2008")
+rlist2008
+import2008 <- lapply(rlist2008, raster)
+import2008
+
+tgr2008 <- stack(import2008)
+tgr2008
+
+rlist2013 <- list.files(pattern="LC08_L2SP_188034_2013")
+rlist2013
+import2013 <- lapply(rlist2013, raster)
+import2013
+
+tgr2013 <- stack(import2013)
+tgr2013
+
+rlist2018 <- list.files(pattern="LC08_L2SP_188034_2018")
+rlist2018
+import2018 <- lapply(rlist2018, raster)
+import2018
+
+tgr2018 <- stack(import2018)
+tgr2018
 
 rlist2022 <- list.files(pattern="LC08_L2SP_188034_2022")
 rlist2022
@@ -28,90 +60,15 @@ tgr2022
 # plot(tgr1999, col=cl)
 # plot(tgr1999[[1]], col=cl)
 
-par(mfrow=c(1,2))
+par(mfrow=c(2,3))
 plotRGB(tgr1999, 4, 2, 1, stretch="lin")
+plotRGB(tgr2003, 4, 2, 1, stretch="lin")
+plotRGB(tgr2008, 4, 2, 1, stretch="lin")
+plotRGB(tgr2013, 4, 2, 1, stretch="lin")
+plotRGB(tgr2018, 4, 2, 1, stretch="lin")
 plotRGB(tgr2022, 4, 2, 1, stretch="lin")
 
-#######################
-#### Esample 2: NO2 decrease during the lockdown period
-#######################
 
-library(raster)
-
-# setwd("~/lab/en") # Linux
-setwd("C:/lab/en") # Windows
-# setwd("/Users/name/Desktop/lab/en") # Mac 
-
-en01 <- raster("EN_0001.png")
-
-cl <- colorRampPalette(c('red','orange','yellow'))(100) # 
-plot(en01, col=cl)
-
-en13 <- raster("EN_0013.png")
-plot(en13, col=cl)
-
-par(mfrow=c(2,1))
-plot(en01, col=cl)
-plot(en13, col=cl)
-
-# Let's import the whole set (altogether)
-
-# Exercise: import the whole as in the Greenland exxam
-# by the following steps: list.files, lapply, stack
-
-# import one by one, it takes a long process
-en01 <- raster("EN_0001.png")
-en02 <- raster("EN_0002.png")
-en03 <- raster("EN_0003.png")
-en04 <- raster("EN_0004.png")
-en05 <- raster("EN_0005.png")
-en06 <- raster("EN_0006.png")
-en07 <- raster("EN_0007.png")
-en08 <- raster("EN_0008.png")
-en09 <- raster("EN_0009.png")
-en10 <- raster("EN_0010.png")
-en11 <- raster("EN_0011.png")
-en12 <- raster("EN_0012.png")
-en13 <- raster("EN_0013.png")
-
-# Import the whole set altogether
-rlist <- list.files(pattern="EN")
-rlist
-rimp <- lapply(rlist, raster)
-rimp
-
-en <- stack(rimp)
-en
-plot(en, col=cl)
-
-# Exercise: plot EN01 beisdes EN13
-par(mfrow=c(1,2))
-plot(en[[1]], col=cl)
-plot(en[[13]], col=cl)
-
-# or
-en113 <- stack(en[[1]], en[[13]])
-plot(en113, col=cl)
-
-# let's make the difference
-difen <- en[[1]] - en[[13]]
-cldif <- colorRampPalette(c('blue','white','red'))(100) # 
-plot(difen, col=cldif)
-
-# plotRGB of three files together
-plotRGB(en, r=1, g=7, b=13, stretch="lin")
-plotRGB(en, r=1, g=7, b=13, stretch="hist")
-
-
-
-#######################
-#### Excercise Source Function
-#######################
-
-# create a file with a text editor, copying a code, save it as inputcode2.r in C:/lab
-library(raster)
-setwd("C:/lab")
-source("inputcode2.r")
 
 
 
