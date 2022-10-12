@@ -32,10 +32,16 @@ import2012
 tgr2012 <- stack(import2012)
 tgr2012
 
-
+# LT and LC
 # layer 1 = blue
 # layer 2 = green
 # layer 3 = red
+# layer 4 = near infrared (NIR)
+
+# LM
+# layer 1 = green
+# layer 2 = red
+# layer 3 = near infrared
 # layer 4 = near infrared (NIR)
 
 # plot(tgr1999, col=cl)
@@ -47,9 +53,9 @@ plotRGB(tgr2012, 4, 3, 2, stretch="hist")
 
 # DVI Difference Vegetation Index
 
-dvi1972 = tgr1972[[4]] - tgr1972[[3]]
+dvi1972 = tgr1972[[4]] - tgr1972[[2]]
 dvi1972
-dvi2012 = tgr2012[[4]] - tgr2012[[3]]
+dvi2012 = tgr2012[[4]] - tgr2012[[2]]
 dvi2012
 
 cldvi <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
