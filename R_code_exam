@@ -1,11 +1,12 @@
 # Time series analysis of Greenland LST data
 
+# install.packages("raster")
 library(raster)
 # install.packages("RStoolbox")
 library(RStoolbox)
 # install.packages("rgdal")
 # library(rgdal)
-install.packages("rasterdiv")
+# install.packages("rasterdiv")
 library(rasterdiv)
 
 # setwd("~/telerilevamento_exam/1999_2022_02") # Linux
@@ -63,85 +64,168 @@ import2022
 tgr2022 <- stack(import2022)
 tgr2022
 
+# layer 1 = blue
+# layer 2 = green
+# layer 3 = red
+# layer 4 = near infrared (NIR)
+
 # plot(tgr1999, col=cl)
 # plot(tgr1999[[1]], col=cl)
 
 par(mfrow=c(2,3))
-plotRGB(tgr1999, 4, 2, 1, stretch="lin")
-plotRGB(tgr2003, 4, 2, 1, stretch="lin")
-plotRGB(tgr2008, 4, 2, 1, stretch="lin")
-plotRGB(tgr2013, 4, 2, 1, stretch="lin")
-plotRGB(tgr2018, 4, 2, 1, stretch="lin")
-plotRGB(tgr2022, 4, 2, 1, stretch="lin")
-
-
-
-library(raster)
-# install.packages("RStoolbox")
-library(RStoolbox)
-# install.packages("rgdal")
-# library(rgdal)
-install.packages("rasterdiv")
-library(rasterdiv)
-
-# setwd("~/lab/") # Linux
-setwd("C:/lab/") # Windows
-# setwd("/Users/name/Desktop/lab/") # Mac
-
-# import the first file -> defor1_.jpg -> give it the name l1992
-l1992 <- brick("defor1_.jpg")
-
-# l1992 <- brick("p224r63_1988.grd")
-
-plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
-# plotRGB(l1992, r=4, g=3, b=2, stretch="lin")
-
-# layer 1 = NIR
-# layer 2 = red
-# layer 3 = green
-
-# Exercise: import the second file -> defor2_.jpg -> give it the name l2006
-l2006 <- brick("defor2_.jpg")
-
-# l2006 <- brick("p224r63_2011.grd")
-
-plotRGB(l2006, r=1, g=2, b=3, stretch="lin")
-# plotRGB(l2006, r=4, g=3, b=2, stretch="lin")
-
-
-
-# Excercise: plot in a multiframe the two images with one on the top of the other
-par(mfrow=c(2, 1))
-plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
-plotRGB(l2006, r=1, g=2, b=3, stretch="lin")
+plotRGB(tgr1999, 4, 3, 2, stretch="lin")
+plotRGB(tgr2003, 4, 3, 2, stretch="lin")
+plotRGB(tgr2008, 4, 3, 2, stretch="lin")
+plotRGB(tgr2013, 4, 3, 2, stretch="lin")
+plotRGB(tgr2018, 4, 3, 2, stretch="lin")
+plotRGB(tgr2022, 4, 3, 2, stretch="lin")
 
 # DVI Difference Vegetation Index
-dvi1992 = l1992[[1]] - l1992[[2]]
-# or
-# substitute index numbers with name
 
-
-# dvi1992 = l1992[[4]] - l1992[[3]]
-dvi1992
-
+dvi1999 = tgr1999[[4]] - tgr1999[[3]]
+dvi1999
+dvi2003 = tgr2003[[4]] - tgr2003[[3]]
+dvi2003
+dvi2008 = tgr2008[[4]] - tgr2008[[3]]
+dvi2008
+dvi2013 = tgr2013[[4]] - tgr2013[[3]]
+dvi2013
+dvi2018 = tgr2018[[4]] - tgr2018[[3]]
+dvi2018
+dvi2022 = tgr2022[[4]] - tgr2022[[3]]
+dvi2022
 
 cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
-plot(dvi1992, col=cl)
 
-dvi2006 = l2006[[1]] - l2006[[2]]
-dvi2006
-cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
-plot(dvi2006, col=cl)
-
-par(mfrow=c(2, 1))
-plot(dvi1992, col=cl)
-plot(dvi2006, col=cl)
+par(mfrow=c(2, 3))
+plot(dvi1999, col=cl)
+plot(dvi2003, col=cl)
+plot(dvi2008, col=cl)
+plot(dvi2013, col=cl)
+plot(dvi2018, col=cl)
+plot(dvi2022, col=cl)
 
 # DVI difference in time
-dvi_dif = dvi1992 - dvi2006
+dvi_dif99_22 = dvi1999 - dvi2022
 cld <- colorRampPalette(c('blue','white','red'))(100) 
-dev.off()
-plot(dvi_dif, col=cld)
+plot(dvi_dif99_22, col=cld)
+
+dvi_dif08_22 = dvi2008 - dvi2022
+plot(dvi_dif08_22, col=cld)
+
+dvi_dif13_22 = dvi2013 - dvi2022
+plot(dvi_dif13_22, col=cld)
+
+par(mfrow=c(1, 2))
+plot(dvi_dif99_22, col=cld)
+plot(dvi_dif08_22, col=cld)
+
+par(mfrow=c(1, 3))
+plot(dvi2013, col=cl)
+plot(dvi2018, col=cl)
+plot(dvi2022, col=cl)
+
+
+
+#let's try with a map of the eastern sicily
+
+setwd("C:/telerilevamento_exam/") # Windows
+
+cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
+
+# Import the whole set altogether
+rlist1999 <- list.files(pattern="LE07_L2SP_188034_1999")
+rlist1999
+import1999 <- lapply(rlist1999, raster)
+import1999
+
+tgr1999 <- stack(import1999)
+tgr1999
+
+rlist2003 <- list.files(pattern="LT05_L2SP_188034_2003")
+rlist2003
+import2003 <- lapply(rlist2003, raster)
+import2003
+
+tgr2003 <- stack(import2003)
+tgr2003
+
+rlist2008 <- list.files(pattern="LT05_L2SP_188034_2008")
+rlist2008
+import2008 <- lapply(rlist2008, raster)
+import2008
+
+tgr2008 <- stack(import2008)
+tgr2008
+
+rlist2013 <- list.files(pattern="LC08_L2SP_188034_2013")
+rlist2013
+import2013 <- lapply(rlist2013, raster)
+import2013
+
+tgr2013 <- stack(import2013)
+tgr2013
+
+rlist2018 <- list.files(pattern="LC08_L2SP_188034_2018")
+rlist2018
+import2018 <- lapply(rlist2018, raster)
+import2018
+
+tgr2018 <- stack(import2018)
+tgr2018
+
+rlist2022 <- list.files(pattern="LC08_L2SP_188034_2022")
+rlist2022
+import2022 <- lapply(rlist2022, raster)
+import2022
+
+tgr2022 <- stack(import2022)
+tgr2022
+
+# plot(tgr1999, col=cl)
+# plot(tgr1999[[1]], col=cl)
+
+par(mfrow=c(2,3))
+plotRGB(tgr1999, 4, 3, 2, stretch="lin")
+plotRGB(tgr2003, 4, 3, 2, stretch="lin")
+plotRGB(tgr2008, 4, 3, 2, stretch="lin")
+plotRGB(tgr2013, 4, 3, 2, stretch="lin")
+plotRGB(tgr2018, 4, 3, 2, stretch="lin")
+plotRGB(tgr2022, 4, 3, 2, stretch="lin")
+
+dvi1999 = tgr1999[[4]] - tgr1999[[3]]
+dvi1999
+dvi2008 = tgr2008[[4]] - tgr2008[[3]]
+dvi2008
+dvi2013 = tgr2013[[4]] - tgr2013[[3]]
+dvi2013
+dvi2022 = tgr2022[[4]] - tgr2022[[3]]
+dvi2022
+
+cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
+
+# DVI difference in time
+dvi_dif99_08 = dvi1999 - dvi2008
+cld <- colorRampPalette(c('blue','white','red'))(100) 
+plot(dvi_dif99_08, col=cld)
+
+par(mfrow=c(1, 2))
+plot(dvi1999, col=cl)
+plot(dvi2008, col=cl)
+
+dvi_dif99_22 = dvi1999 - dvi2022
+# cld <- colorRampPalette(c('blue','white','red'))(100) 
+plot(dvi_dif99_22, col=cld)
+
+dvi_dif13_22 = dvi2013 - dvi2022
+# cld <- colorRampPalette(c('blue','white','red'))(100) 
+plot(dvi_dif13_22, col=cld)
+
+par(mfrow=c(1,3))
+plotRGB(tgr2013, 4, 3, 2, stretch="lin")
+plotRGB(tgr2018, 4, 3, 2, stretch="lin")
+plotRGB(tgr2022, 4, 3, 2, stretch="lin")
+
 
 # day 2
 
