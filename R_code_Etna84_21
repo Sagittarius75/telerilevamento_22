@@ -1,0 +1,34 @@
+
+
+
+# install.packages("raster")
+library(raster)
+
+# setwd("~/telerilevamento_exam/1972") # Linux
+setwd("C:/telerilevamento_exam/1972") # Windows
+# setwd("/Users/name/Desktop/telerilevamento_exam/1972") # Mac 
+
+rlist1984 <- list.files(pattern="LT05_L1TP_188034_1984")
+import1984 <- lapply(rlist1984, raster)
+tgr1984 <- stack(import1984)
+
+rlist2021 <- list.files(pattern="LC08_L1TP_188034_2021")
+import2021 <- lapply(rlist2021, raster)
+tgr2021 <- stack(import2021)
+
+dvi1984 = tgr1984[[4]] - tgr1984[[3]]
+dvi2021 = tgr2021[[4]] - tgr2021[[3]]
+
+ndvi1984 = dvi1984 / (tgr1984[[4]] + tgr1984[[3]])
+ndvi2021 = dvi2021 / (tgr2021[[4]] + tgr2021[[3]])
+
+ndvi_dif21_84 = ndvi2021 - ndvi1984
+
+clndvi <- colorRampPalette(c('brown','yellow','green','dark green'))(100)
+cl21_84 <- colorRampPalette(c('red', 'white', 'blue'))(100) 
+
+par(mfrow=c(1,3))
+plot(ndvi1984, col = clndvi)
+plot(ndvi2021, col = clndvi)
+plot(ndvi_dif21_84, col = cl21_84)
+
