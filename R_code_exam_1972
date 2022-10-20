@@ -1,13 +1,13 @@
-# Time series analysis of Greenland LST data
+# 1972 - 2021 Etna
 
 # install.packages("raster")
 library(raster)
 # install.packages("RStoolbox")
-library(RStoolbox)
+# library(RStoolbox)
 # install.packages("rgdal")
 # library(rgdal)
 # install.packages("rasterdiv")
-library(rasterdiv)
+# library(rasterdiv)
 
 # setwd("~/telerilevamento_exam/1972") # Linux
 setwd("C:/telerilevamento_exam/1972") # Windows
@@ -24,13 +24,13 @@ import1972
 tgr1972 <- stack(import1972)
 tgr1972
 
-rlist2012 <- list.files(pattern="LM05_L1TP_188034_2012")
-rlist2012
-import2012 <- lapply(rlist2012, raster)
-import2012
+rlist2021 <- list.files(pattern="LC08_L1TP_188034_2021")
+rlist2021
+import2021 <- lapply(rlist2021, raster)
+import2021
 
-tgr2012 <- stack(import2012)
-tgr2012
+tgr2021 <- stack(import2021)
+tgr2021
 
 # LT and LC
 # layer 1 = blue
@@ -44,32 +44,110 @@ tgr2012
 # layer 3 = near infrared
 # layer 4 = near infrared (NIR)
 
-# plot(tgr1999, col=cl)
-# plot(tgr1999[[1]], col=cl)
-
-par(mfrow=c(2,1))
-plotRGB(tgr1972, 4, 3, 2, stretch="hist")
-plotRGB(tgr2012, 4, 3, 2, stretch="hist")
+par(mfrow=c(1,2))
+plotRGB(tgr1972, 3, 2, 1, stretch="lin")
+plotRGB(tgr2021, 4, 3, 2, stretch="lin")
 
 # DVI Difference Vegetation Index
 
-dvi1972 = tgr1972[[4]] - tgr1972[[2]]
+dvi1972 = tgr1972[[3]] - tgr1972[[2]]
 dvi1972
-dvi2012 = tgr2012[[4]] - tgr2012[[2]]
-dvi2012
+dvi2021 = tgr2021[[4]] - tgr2021[[3]]
+dvi2021
 
 cldvi <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
 
-par(mfrow=c(2, 1))
+par(mfrow=c(1, 2))
 plot(dvi1972, col=cldvi)
-plot(dvi2012, col=cldvi)
+plot(dvi2021, col=cldvi)
 
 # DVI difference in time
-dvi_dif72_12 = dvi1972 - dvi2012
+# dvi_dif72_21 = dvi1972 - dvi2021
+# clddif <- colorRampPalette(c('blue','white','red'))(100) 
+# plot(dvi_dif72_21, col=clddif)
+
+ndvi1972 = dvi1972 / (tgr1972[[3]] + tgr1972[[2]])
+ndvi1972
+ndvi2021 = dvi2021 / (tgr2021[[4]] + tgr2021[[3]])
+ndvi2021
+
+
+# 1984_2021 large map
+
+# install.packages("raster")
+library(raster)
+# install.packages("RStoolbox")
+# library(RStoolbox)
+# install.packages("rgdal")
+# library(rgdal)
+# install.packages("rasterdiv")
+# library(rasterdiv)
+
+# setwd("~/telerilevamento_exam/1972_21") # Linux
+setwd("C:/telerilevamento_exam/1972_21") # Windows
+# setwd("/Users/name/Desktop/telerilevamento_exam/1972_21") # Mac 
+
+cl <- colorRampPalette(c("blue","light blue","pink","red"))(100)
+
+# Import the whole set altogether
+rlist1984 <- list.files(pattern="LT05_L1TP_188034_1984")
+rlist1984
+import1984 <- lapply(rlist1984, raster)
+import1984
+
+tgr1984 <- stack(import1984)
+tgr1984
+
+rlist2021 <- list.files(pattern="LC08_L1TP_188034_2021")
+rlist2021
+import2021 <- lapply(rlist2021, raster)
+import2021
+
+tgr2021 <- stack(import2021)
+tgr2021
+
+# LT and LC
+# layer 1 = blue
+# layer 2 = green
+# layer 3 = red
+# layer 4 = near infrared (NIR)
+
+# LM
+# layer 1 = green
+# layer 2 = red
+# layer 3 = near infrared
+# layer 4 = near infrared (NIR)
+
+par(mfrow=c(1,2))
+plotRGB(tgr1984, 4, 3, 2, stretch="lin")
+plotRGB(tgr2021, 4, 3, 2, stretch="lin")
+
+# DVI Difference Vegetation Index
+
+dvi1984 = tgr1984[[4]] - tgr1984[[3]]
+dvi1984
+dvi2021 = tgr2021[[4]] - tgr2021[[3]]
+dvi2021
+
+cldvi <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
+
+par(mfrow=c(1, 2))
+plot(dvi1984, col=cldvi)
+plot(dvi2021, col=cldvi)
+
+# DVI difference in time
+# dvi_dif84_21 = dvi1984 - dvi2021
+# clddif <- colorRampPalette(c('blue','white','red'))(100) 
+# plot(dvi_dif84_21, col=clddif)
+
+ndvi1984 = dvi1984 / (tgr1984[[4]] + tgr1984[[3]])
+ndvi1984
+ndvi2021 = dvi2021 / (tgr2021[[4]] + tgr2021[[3]])
+ndvi2021
+
+ndvi_dif = ndvi1984 - ndvi2021
 clddif <- colorRampPalette(c('blue','white','red'))(100) 
-plot(dvi_dif72_12, col=clddif)
-
-
+plot(ndvi_dif, col=clddif)
 
 
 # day 2
