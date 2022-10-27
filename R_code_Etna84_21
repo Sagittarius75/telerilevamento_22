@@ -3,7 +3,6 @@
 
 # install.packages("raster")
 library(raster)
-library(RStoolbox)
 
 # setwd("~/telerilevamento_exam/1972") # Linux
 setwd("C:/telerilevamento_exam/1972") # Windows
