@@ -3,24 +3,60 @@
 
 # install.packages("raster")
 library(raster)
+library(RStoolbox)
 
-# setwd("~/telerilevamento_exam/1972") # Linux
-setwd("C:/telerilevamento_exam/1972") # Windows
-# setwd("/Users/name/Desktop/telerilevamento_exam/1972") # Mac 
+# setwd("~/telerilevamento_exam/1984_21") # Linux
+setwd("C:/telerilevamento_exam/1984_21") # Windows
+# setwd("/Users/name/Desktop/telerilevamento_exam/1984_21") # Mac 
 
 rlist1984 <- list.files(pattern="LT05_L1TP_188034_1984")
 import1984 <- lapply(rlist1984, raster)
-tgr1984 <- stack(import1984)
+etna1984 <- stack(import1984)
 
 rlist2021 <- list.files(pattern="LC08_L1TP_188034_2021")
 import2021 <- lapply(rlist2021, raster)
-tgr2021 <- stack(import2021)
+etna2021 <- stack(import2021)
 
-dvi1984 = tgr1984[[4]] - tgr1984[[3]]
-dvi2021 = tgr2021[[4]] - tgr2021[[3]]
+dvi1984 = etna1984[[4]] - etna1984[[3]]
+dvi2021 = etna2021[[4]] - etna2021[[3]]
 
-ndvi1984 = dvi1984 / (tgr1984[[4]] + tgr1984[[3]])
-ndvi2021 = dvi2021 / (tgr2021[[4]] + tgr2021[[3]])
+ndvi1984 = dvi1984 / (etna1984[[4]] + etna1984[[3]])
+ndvi2021 = dvi2021 / (etna2021[[4]] + etna2021[[3]])
+
+ndvi1984c <- unsuperClass(ndvi1984, nClasses=2)
+plot(ndvi1984c$map)
+ndvi2021c <- unsuperClass(ndvi2021, nClasses=2)
+plot(ndvi2021c$map)
+par(mfrow=c(1, 2))
+plot(ndvi1984c$map)
+plot(ndvi2021c$map)
+
+freq(ndvi1984c$map)
+plot(ndvi1984c$map)
+
+freq(ndvi2021c$map)
+plot(ndvi2021c$map)
+
+ndvi1984
+totndvi1984 <- 799900
+
+perc_forest_1984 <- 347267 * 100 / totndvi1984
+perc_roccia_1984 <- 100-perc_forest_1984
+
+perc_forest_1984
+perc_roccia_1984
+
+ndvi2021
+totndvi2021 <- 799900
+
+perc_forest_2021 <- 391296 * 100 / totndvi2021
+perc_roccia_2021 <- 100-perc_forest_2021
+
+perc_forest_2021
+perc_roccia_2021
+
+
+
 
 ndvi_dif21_84 = ndvi2021 - ndvi1984
 
