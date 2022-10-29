@@ -41,7 +41,7 @@ plot(sd3, col=clsd)
 
 # plotting with ggplot
 ggplot() +
-geom_raster(sd, mapping = aes(x=x, y=y, fill=layer))
+geom_raster(sd3, mapping = aes(x=x, y=y, fill=layer))
 
 # with viridis
 ggplot() +
