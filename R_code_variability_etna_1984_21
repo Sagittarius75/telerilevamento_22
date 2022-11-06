@@ -1,0 +1,64 @@
+# install.packages("raster")
+library(raster)
+# install.packages("RStoolbox")
+library(RStoolbox)
+# install.packages("viridis")
+library(viridis)
+# install.packages("ggplot2")
+library(ggplot2)
+# install.packages("patchwork")
+library(patchwork)
+
+
+# setwd("~/telerilevamento_exam/1972_21") # Linux
+setwd("C:/telerilevamento_exam/1972_21") # Windows
+# setwd("/Users/name/Desktop/telerilevamento_exam/1972_21") # Mac 
+
+rlist1984 <- list.files(pattern="LT05_L1TP_188034_1984")
+import1984 <- lapply(rlist1984, raster)
+ 
+rlist2021 <- list.files(pattern="LC08_L1TP_188034_2021")
+import2021 <- lapply(rlist2021, raster)
+ 
+etna1984 <- brick(import1984[[4]], import1984[[3]], import1984[[2]])
+etna2021 <- brick(import2021[[4]], import2021[[3]], import2021[[2]])
+
+plotRGB(etna1984, 1, 2, 3, stretch="lin")
+
+etna1984pca <- rasterPCA(etna1984)
+etna2021pca <- rasterPCA(etna2021)
+
+etna1984pca
+summary(etna1984pca$model)
+
+g1 <- ggplot() +
+geom_raster(etna1984pca$map, mapping=aes(x=x, y=y, fill=PC1)) +
+scale_fill_viridis(option = "inferno") +
+ggtitle("PC1")
+
+g2 <- ggplot() +
+geom_raster(etna2021pca$map, mapping=aes(x=x, y=y, fill=PC1)) +
+scale_fill_viridis(option = "inferno") +
+ggtitle("PC1 Etna 2021")
+
+g1 + g2
+
+etna1984pc1 <- etna1984pca$map[[1]]
+etna2021pc1 <- etna2021pca$map[[1]]
+
+etna1984sd <- focal(etna1984pc1, matrix(1/9, 3, 3), fun=sd)
+etna2021sd <- focal(etna2021pc1, matrix(1/9, 3, 3), fun=sd)
+
+g1sd <- ggplot() +
+geom_raster(etna1984sd, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "inferno") +
+ggtitle("SD Etna 1984")
+
+g2sd <- ggplot() +
+geom_raster(etna2021sd, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "inferno") +
+ggtitle("SD Etna 2021")
+
+g1sd + g2sd
+
+
