@@ -54,7 +54,7 @@ g1+g2
 g3 <- ggplot() +
 geom_raster(p224r63_2011res, mapping =aes(x=x, y=y, fill=B4_sre)) +
 scale_fill_viridis(option = "inferno") +
-ggtitle("PC1")
+ggtitle("B4_sre")
 
 g1+g3
 
