@@ -2,9 +2,9 @@
 library(raster)
 library(RStoolbox)
 
-# setwd("~/telerilevamento_exam/1984_21") # Linux
-setwd("C:/telerilevamento_exam/1984_21") # Windows
-# setwd("/Users/name/Desktop/telerilevamento_exam/1984_21") # Mac 
+# setwd("~/telerilevamento_exam/1972_21") # Linux
+setwd("C:/telerilevamento_exam/1972_21") # Windows
+# setwd("/Users/name/Desktop/telerilevamento_exam/1972_21") # Mac 
 
 rlist1984 <- list.files(pattern="LT05_L1TP_188034_1984")
 import1984 <- lapply(rlist1984, raster)
