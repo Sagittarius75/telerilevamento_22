@@ -34,7 +34,7 @@ summary(etna1984pca$model)
 g1 <- ggplot() +
 geom_raster(etna1984pca$map, mapping=aes(x=x, y=y, fill=PC1)) +
 scale_fill_viridis(option = "inferno") +
-ggtitle("PC1")
+ggtitle("PC1 Etna 1984")
 
 g2 <- ggplot() +
 geom_raster(etna2021pca$map, mapping=aes(x=x, y=y, fill=PC1)) +
