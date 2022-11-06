@@ -4,6 +4,7 @@ library(raster)
 library(RStoolbox)
 library(ggplot2)
 library(patchwork)
+library(viridis)
 
 #setwd("~/lab/") # Linux
 setwd("C:/lab/") # Windows
