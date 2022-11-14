@@ -8,7 +8,6 @@ file <- system.file("external/species.shp", package="sdm")
 species <- shapefile(file)
 species
 
-[09:33] Duccio Rocchini
 plot(species, pch=19)
 
 species$Occurrence
