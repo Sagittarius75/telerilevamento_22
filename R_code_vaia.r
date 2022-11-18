@@ -148,6 +148,39 @@ View(multitemporal)
 # plot(postvaia2022c$map)
 # legend(x = "topright", legend = c("1: water", "2: clouds", "3: good vegetation", "4: urban", "5: perfect vegetation"), title = ("classes 2022"))
   
+pca2018 <- rasterPCA(prevaia2018res)
+pca2022 <- rasterPCA(postvaia2022res)
 
+pca2018
+summary(pca2018$model)
 
+ggppc1_2018 <- ggplot() +
+geom_raster(pca2018$map, mapping=aes(x=x, y=y, fill=PC1)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("PC1 prevaia 2018")
+
+ggppc1_2022 <- ggplot() +
+geom_raster(pca2022$map, mapping=aes(x=x, y=y, fill=PC1)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("PC1 postvaia 2022")
+
+ggppc1_2018 + ggppc1_2022
+
+pc1_2018 <- pca2018$map[[1]]
+pc1_2022 <- pca2022$map[[1]]
+
+sd2018 <- focal(pc1_2018, matrix(1/9, 3, 3), fun=sd)
+sd2022 <- focal(pc1_2022, matrix(1/9, 3, 3), fun=sd)
+
+ggpsd2018 <- ggplot() +
+geom_raster(sd2018, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("SD prevaia 2018")
+
+ggpsd2022 <- ggplot() +
+geom_raster(sd2022, mapping=aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("SD postvaia 2022")
+
+ggpsd2018 + ggpsd2022
 
