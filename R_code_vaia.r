@@ -169,20 +169,20 @@ ggppc1_2018 + ggppc1_2022
 pc1_2018 <- pca2018$map[[1]]
 pc1_2022 <- pca2022$map[[1]]
 
-sd2018 <- focal(pc1_2018, matrix(1/9, 3, 3), fun=sd)
-sd2022 <- focal(pc1_2022, matrix(1/9, 3, 3), fun=sd)
+sdpc1_2018 <- focal(pc1_2018, matrix(1/9, 3, 3), fun=sd)
+sdpc1_2022 <- focal(pc1_2022, matrix(1/9, 3, 3), fun=sd)
 
-ggpsd2018 <- ggplot() +
-geom_raster(sd2018, mapping=aes(x=x, y=y, fill=layer)) +
+ggpsdpc1_2018 <- ggplot() +
+geom_raster(sdpc1_2018, mapping=aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
 ggtitle("SD prevaia 2018")
 
-ggpsd2022 <- ggplot() +
-geom_raster(sd2022, mapping=aes(x=x, y=y, fill=layer)) +
+ggpsdpc1_2022 <- ggplot() +
+geom_raster(sdpc1_2022, mapping=aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
 ggtitle("SD postvaia 2022")
 
-ggpsd2018 + ggpsd2022
+ggpsdpc1_2018 + ggpsdpc1_2022
 
 nir2018 <- prevaia2018res[[4]]
 nir2022 <- postvaia2022res[[4]]
