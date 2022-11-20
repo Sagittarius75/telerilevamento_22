@@ -184,3 +184,39 @@ ggtitle("SD postvaia 2022")
 
 ggpsd2018 + ggpsd2022
 
+nir2018 <- prevaia2018res[[4]]
+nir2022 <- postvaia2022res[[4]]
+
+sdnir2018 <- focal(nir2018, matrix(1/9, 3, 3), fun=sd)
+# sdnir2018 <- focal(nir2018, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
+sdnir2022 <- focal(nir2022, matrix(1/9, 3, 3), fun=sd)
+
+clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
+
+par(mfrow=c(1,2))
+plot(sdnir2018, col=clsd)
+plot(sdnir2022, col=clsd)
+
+# plotting with ggplot and viridis
+
+ggpnir2018 <- ggplot() +
+geom_raster(nir2018, mapping = aes(x=x, y=y, fill=T32TPR_20180718T101031_B08_10m)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("NIR 2018 viridis")
+
+ggpnir2022 <- ggplot() +
+geom_raster(nir2022, mapping = aes(x=x, y=y, fill=T32TPR_20220722T100559_B08_10m)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("NIR 2022 viridis")
+
+ggpsdnir2018 <- ggplot() +
+geom_raster(sdnir2018, mapping = aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("Standard Deviation NIR 2018 viridis")
+
+ggpsdnir2022 <- ggplot() +
+geom_raster(sdnir2022, mapping = aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("Standard Deviation NIR 2022 viridis")
+
+
