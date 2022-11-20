@@ -42,17 +42,17 @@ summary(sic1972pca$model)
 
 g1 <- ggplot() +
 geom_raster(sic1972pca$map, mapping=aes(x=x, y=y, fill=PC1)) +
-scale_fill_viridis(option = "inferno") +
+scale_fill_viridis(option = "viridis") +
 ggtitle("PC1 Sicily 1972")
 
 g2 <- ggplot() +
 geom_raster(sic1984pca$map, mapping=aes(x=x, y=y, fill=PC1)) +
-scale_fill_viridis(option = "inferno") +
+scale_fill_viridis(option = "viridis") +
 ggtitle("PC1 Sicily 1984")
 
 g3 <- ggplot() +
 geom_raster(sic2021pca$map, mapping=aes(x=x, y=y, fill=PC1)) +
-scale_fill_viridis(option = "inferno") +
+scale_fill_viridis(option = "viridis") +
 ggtitle("PC1 Sicily 2021")
 
 g1 + g2 + g3
@@ -67,17 +67,17 @@ sic2021sd <- focal(sic2021pc1, matrix(1/9, 3, 3), fun=sd)
 
 g1sd <- ggplot() +
 geom_raster(sic1972sd, mapping=aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
+scale_fill_viridis(option = "viridis") +
 ggtitle("SD Sicily 2021")
 
 g2sd <- ggplot() +
 geom_raster(sic1984sd, mapping=aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
+scale_fill_viridis(option = "viridis") +
 ggtitle("SD Sicily 1984")
 
 g3sd <- ggplot() +
 geom_raster(sic2021sd, mapping=aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
+scale_fill_viridis(option = "viridis") +
 ggtitle("SD Sicily 2021")
 
 g1sd + g2sd + g3sd
