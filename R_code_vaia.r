@@ -29,10 +29,6 @@ postvaia2022 <- brick(vimport2022)
 prevaia2018res <- aggregate(prevaia2018, fact=10)
 postvaia2022res <- aggregate(postvaia2022, fact=10)
 
-dvi2018 = prevaia2018res[[4]] - prevaia2018res[[3]]
-dvi2022 = postvaia2022res[[4]] - postvaia2022res[[3]]
-
-# cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
 
 # nc = natural color
 # cir = color infrared
@@ -44,6 +40,11 @@ ggpcir2018 <- ggRGB(prevaia2018res, 4, 3, 2, stretch="lin")
 ggpcir2022 <- ggRGB(postvaia2022res, 4, 3, 2, stretch="lin")
 
 (ggpnc2018 + ggpcir2018) / (ggpnc2022 + ggpcir2022)
+
+dvi2018 = prevaia2018res[[4]] - prevaia2018res[[3]]
+dvi2022 = postvaia2022res[[4]] - postvaia2022res[[3]]
+
+# cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
 
 ggpdvi2018 <- ggplot() +
 geom_raster(dvi2018, mapping =aes(x=x, y=y, fill=layer)) +
@@ -59,6 +60,7 @@ ggtitle("DVI_2022")
 (ggpnc2018 + ggpcir2018 + ggpdvi2018) / (ggpnc2022 + ggpcir2022 + ggpdvi2022)
 # dev.off()
 
+# cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
 
 # par(mfrow=c(1, 2))
 # plot(dvi2018, col=cl)
@@ -111,13 +113,13 @@ freq(postvaia2022c$map)
 
 # total pixel = 1205604
 
-pdf("VAIA_class_2018_22.pdf")
+# pdf("VAIA_class_2018_22.pdf")
 par(mfrow=c(2, 2))
 plotRGB(prevaia2018res, r=4, g=3, b=2, stretch="lin")
 plot(prevaia2018c$map)
 plotRGB(postvaia2022res, r=4, g=3, b=2, stretch="lin")
 plot(postvaia2022c$map)
-dev.off()
+# dev.off()
 
 perc_veg_2018 <- (396800 + 514268) * 100 / 1205604
 perc_urb_2018 <- 227811 * 100 / 1205604
