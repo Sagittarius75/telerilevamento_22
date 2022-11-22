@@ -12,11 +12,11 @@ setwd("C:/telerilevamento_exam/vaia") # Windows
 
 vlist2018 <- list.files(pattern="T32TPR_2018")
 vimport2018 <- lapply(vlist2018, raster)
-prevaia2018 <- brick(vimport2018)
+prevaia2018res <- brick(vimport2018)
 
 vlist2022 <- list.files(pattern="T32TPR_2022")
 vimport2022 <- lapply(vlist2022, raster)
-postvaia2022 <- brick(vimport2022)
+postvaia2022res <- brick(vimport2022)
 
 # layer 1 = blue
 # layer 2 = green
@@ -26,8 +26,8 @@ postvaia2022 <- brick(vimport2022)
 # prevaia2018st <- stack(vimport2018)
 # postvaia2022st <- stack(vimport2022)
 
-prevaia2018res <- aggregate(prevaia2018, fact=10)
-postvaia2022res <- aggregate(postvaia2022, fact=10)
+# prevaia2018res <- aggregate(prevaia2018, fact=10)
+# postvaia2022res <- aggregate(postvaia2022, fact=10)
 
 
 # nc = natural color
@@ -46,18 +46,18 @@ dvi2022 = postvaia2022res[[4]] - postvaia2022res[[3]]
 
 # cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
 
-ggpdvi2018 <- ggplot() +
-geom_raster(dvi2018, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "viridis") +
-ggtitle("DVI_2018")
+# ggpdvi2018 <- ggplot() +
+# geom_raster(dvi2018, mapping =aes(x=x, y=y, fill=layer)) +
+# scale_fill_viridis(option = "viridis") +
+# ggtitle("DVI_2018")
 
-ggpdvi2022 <- ggplot() +
-geom_raster(dvi2022, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "viridis") +
-ggtitle("DVI_2022")
+# ggpdvi2022 <- ggplot() +
+# geom_raster(dvi2022, mapping =aes(x=x, y=y, fill=layer)) +
+# scale_fill_viridis(option = "viridis") +
+# ggtitle("DVI_2022")
 
 # pdf("VAIA_comparison.pdf")
-(ggpnc2018 + ggpcir2018 + ggpdvi2018) / (ggpnc2022 + ggpcir2022 + ggpdvi2022)
+# (ggpnc2018 + ggpcir2018 + ggpdvi2018) / (ggpnc2022 + ggpcir2022 + ggpdvi2022)
 # dev.off()
 
 # cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
@@ -66,81 +66,93 @@ ggtitle("DVI_2022")
 # plot(dvi2018, col=cl)
 # plot(dvi2022, col=cl)
 
-dvi_dif = dvi2018 - dvi2022
+# dvi_dif = dvi2018 - dvi2022
+# cld <- colorRampPalette(c('blue','white','red'))(100) 
+
+# pdf("VAIA_dvi_diff_2018_22.pdf")
+# plot(dvi_dif, col=cld) # extreme values are clouds
+# dev.off()
+
+ndvi2018 = dvi2018 / (prevaia2018res[[4]] + prevaia2018res[[3]])
+ndvi2022 = dvi2022 / (postvaia2022res[[4]] + postvaia2022res[[3]])
+
+ggpndvi2018 <- ggplot() +
+geom_raster(ndvi2018, mapping =aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("NDVI_2018")
+
+ggpndvi2022 <- ggplot() +
+geom_raster(ndvi2022, mapping =aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "viridis") +
+ggtitle("NDVI_2022")
+
+ggpndvi2018 + ggpndvi2022
+
+ndvi_dif = ndvi2018 - ndvi2022
 cld <- colorRampPalette(c('blue','white','red'))(100) 
 
 # pdf("VAIA_dvi_diff_2018_22.pdf")
-plot(dvi_dif, col=cld) # extreme values are clouds
+plot(ndvi_dif, col=cld) # extreme values are clouds
 # dev.off()
 
 # par(mfrow=c(1, 2))
 # plotRGB(prevaia2018res, r=4, g=3, b=2, stretch="lin")
 # plotRGB(postvaia2022res, r=4, g=3, b=2, stretch="lin")
 
-prevaia2018c <- unsuperClass(prevaia2018res, nClasses=5)
-
-par(mfrow=c(1, 2))
-plotRGB(prevaia2018res, r=3, g=2, b=1, stretch="lin")
-plot(prevaia2018c$map)
-
+prevaia2018c <- unsuperClass(ndvi2018, nClasses=3)
+postvaia2022c <- unsuperClass(ndvi2022, nClasses=3)
 
 freq(prevaia2018c$map)
-# class 1   11826 clouds
-# class 2  227811 urban
-# class 3  514268 vegetation in perfect state (dark red in a plot with band 4, 3, 2) 
-    # plotRGB(prevaia2018res, r=4, g=3, b=2, stretch="lin")
-# class 4  396800 vegetation in a good state (light green in a plot with band  3, 2, 1)
-    # plotRGB(prevaia2018res, r=3, g=2, b=1, stretch="lin")
-# class 5   54899 water
-
-# total pixel = 1205604
-
-postvaia2022c <- unsuperClass(postvaia2022res, nClasses=5)
-
-par(mfrow=c(1, 2))
-plotRGB(postvaia2022res, r=3, g=2, b=1, stretch="lin")
-plot(postvaia2022c$map)
+# class 1  23656824 ground
+# class 2  77580510 vegetation
+# class 3  19321693 water, clouds, urban 
+   
+# total pixel = 120560400
 
 freq(postvaia2022c$map)
 
-# class 1   50975 water
-# class 2    7129 clouds
-# class 3  350795 vegetation in a good state (light green in a plot with band  3, 2, 1)
-    # plotRGB(postvaia2022res, r=3, g=2, b=1, stretch="lin")
-# class 4  300184 urbana
-# class 5  496521 vegetation in perfect state (dark red in a plot with band 4, 3, 2)
-    # plotRGB(postvaia2022res, r=4, g=3, b=2, stretch="lin")
+# class 1   29882466 water, clouds, urban
+# class 2   55326633 vegetation
+# class 3   35351295 ground
+    
+# total pixel = 120560400
 
-# total pixel = 1205604
+par(mfrow=c(1, 2))
+# plotRGB(prevaia2018res, r=3, g=2, b=1, stretch="lin")
+plot(prevaia2018c$map)
+
+# par(mfrow=c(1, 2))
+# plotRGB(postvaia2022res, r=3, g=2, b=1, stretch="lin")
+plot(postvaia2022c$map)
 
 # pdf("VAIA_class_2018_22.pdf")
-par(mfrow=c(2, 2))
-plotRGB(prevaia2018res, r=4, g=3, b=2, stretch="lin")
-plot(prevaia2018c$map)
-plotRGB(postvaia2022res, r=4, g=3, b=2, stretch="lin")
-plot(postvaia2022c$map)
+ par(mfrow=c(2, 2))
+ plotRGB(prevaia2018res, r=4, g=3, b=2, stretch="lin")
+ plot(prevaia2018c$map)
+ plotRGB(postvaia2022res, r=4, g=3, b=2, stretch="lin")
+ plot(postvaia2022c$map)
 # dev.off()
 
-perc_veg_2018 <- (396800 + 514268) * 100 / 1205604
-perc_urb_2018 <- 227811 * 100 / 1205604
+perc_veg_2018 <- 77580510 * 100 / 120560400
+# perc_urb_2018 <- ______ * 100 / 120560400
 
-perc_veg_2022 <- (350795 + 496521) * 100 / 1205604
-perc_urb_2022 <- 300184 * 100 / 1205604
+perc_veg_2022 <- 55326633 * 100 / 120560400
+# perc_urb_2022 <- ________ * 100 / 120560400
 
-# perc_veg_2018 = 75.56942
-# perc_urb_2018 = 18.89601
+# perc_veg_2018 = 64.34991
+# perc_urb_2018 = ______
 
-# perc_veg_2022 = 70.28145
-# perc_urb_2022 = 24.89905
+# perc_veg_2022 = 45.89122
+# perc_urb_2022 = ______
 
-class <- c("Vegetation","Urban")
-percent_2018 <- c(75.57, 18.90)
-percent_2022 <- c(70.28, 24.90)
+# class <- c("Vegetation","Urban")
+# percent_2018 <- c(75.57, 18.90)
+# percent_2022 <- c(70.28, 24.90)
 
-multitemporal <- data.frame(class, percent_2018, percent_2022)
-multitemporal
+# multitemporal <- data.frame(class, percent_2018, percent_2022)
+# multitemporal
 
-View(multitemporal)
+# View(multitemporal)
 
 
 # par(mfrow=c(1, 2))
