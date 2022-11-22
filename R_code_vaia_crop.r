@@ -88,6 +88,12 @@ cld <- colorRampPalette(c('blue','white','red'))(100)
 plot(ndvi_dif, col=cld) # extreme values are clouds
 # dev.off()
 
+ndvi_difc <- unsuperClass(ndvi_dif, nClasses=5)
+
+par(mfrow=c(1, 2))
+plot(ndvi_dif, col=cld)
+plot(ndvi_difc$map)
+
 prevaia2018c <- unsuperClass(ndvi2018, nClasses=3)
 postvaia2019c <- unsuperClass(ndvi2019, nClasses=3)
 
