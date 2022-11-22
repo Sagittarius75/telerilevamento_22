@@ -148,7 +148,7 @@ View(multitemporal)
 # legend(x = "topright", legend = c("1: water", "2: clouds", "3: good vegetation", "4: urban", "5: perfect vegetation"), title = ("classes 2022"))
   
 pca2018 <- rasterPCA(prevaia2018res)
-pca2022 <- rasterPCA(postvaia2022res)
+pca2019 <- rasterPCA(postvaia2019res)
 
 pca2018
 summary(pca2018$model)
@@ -158,43 +158,43 @@ geom_raster(pca2018$map, mapping=aes(x=x, y=y, fill=PC1)) +
 scale_fill_viridis(option = "viridis") +
 ggtitle("PC1 prevaia 2018")
 
-ggppc1_2022 <- ggplot() +
-geom_raster(pca2022$map, mapping=aes(x=x, y=y, fill=PC1)) +
+ggppc1_2019 <- ggplot() +
+geom_raster(pca2019$map, mapping=aes(x=x, y=y, fill=PC1)) +
 scale_fill_viridis(option = "viridis") +
-ggtitle("PC1 postvaia 2022")
+ggtitle("PC1 postvaia 2019")
 
-ggppc1_2018 + ggppc1_2022
+ggppc1_2018 + ggppc1_2019
 
 pc1_2018 <- pca2018$map[[1]]
-pc1_2022 <- pca2022$map[[1]]
+pc1_2019 <- pca2019$map[[1]]
 
 sdpc1_2018 <- focal(pc1_2018, matrix(1/9, 3, 3), fun=sd)
-sdpc1_2022 <- focal(pc1_2022, matrix(1/9, 3, 3), fun=sd)
+sdpc1_2019 <- focal(pc1_2019, matrix(1/9, 3, 3), fun=sd)
 
 ggpsdpc1_2018 <- ggplot() +
 geom_raster(sdpc1_2018, mapping=aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
 ggtitle("SD prevaia 2018")
 
-ggpsdpc1_2022 <- ggplot() +
-geom_raster(sdpc1_2022, mapping=aes(x=x, y=y, fill=layer)) +
+ggpsdpc1_2019 <- ggplot() +
+geom_raster(sdpc1_2019, mapping=aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
-ggtitle("SD postvaia 2022")
+ggtitle("SD postvaia 2019")
 
-ggpsdpc1_2018 + ggpsdpc1_2022
+ggpsdpc1_2018 + ggpsdpc1_2019
 
-nir2018 <- prevaia2018res[[4]]
-nir2022 <- postvaia2022res[[4]]
+nir2018 <- prevaia2018res[[1]]
+nir2019 <- postvaia2019res[[1]]
 
 sdnir2018 <- focal(nir2018, matrix(1/9, 3, 3), fun=sd)
 # sdnir2018 <- focal(nir2018, w=matrix(1/9, nrow=3, ncol=3), fun=sd)
-sdnir2022 <- focal(nir2022, matrix(1/9, 3, 3), fun=sd)
+sdnir2019 <- focal(nir2019, matrix(1/9, 3, 3), fun=sd)
 
 clsd <- colorRampPalette(c('blue','green','pink','magenta','orange','brown','red','yellow'))(100) # 
 
 par(mfrow=c(1,2))
 plot(sdnir2018, col=clsd)
-plot(sdnir2022, col=clsd)
+plot(sdnir2019, col=clsd)
 
 # plotting with ggplot and viridis
 
@@ -203,18 +203,20 @@ geom_raster(nir2018, mapping = aes(x=x, y=y, fill=T32TPR_20180718T101031_B08_10m
 scale_fill_viridis(option = "viridis") +
 ggtitle("NIR 2018 viridis")
 
-ggpnir2022 <- ggplot() +
-geom_raster(nir2022, mapping = aes(x=x, y=y, fill=T32TPR_20220722T100559_B08_10m)) +
+ggpnir2019 <- ggplot() +
+geom_raster(nir2019, mapping = aes(x=x, y=y, fill=T32TPR_20220722T100559_B08_10m)) +
 scale_fill_viridis(option = "viridis") +
-ggtitle("NIR 2022 viridis")
+ggtitle("NIR 2019 viridis")
 
 ggpsdnir2018 <- ggplot() +
 geom_raster(sdnir2018, mapping = aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
 ggtitle("Standard Deviation NIR 2018 viridis")
 
-ggpsdnir2022 <- ggplot() +
-geom_raster(sdnir2022, mapping = aes(x=x, y=y, fill=layer)) +
+ggpsdnir2019 <- ggplot() +
+geom_raster(sdnir2019, mapping = aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
-ggtitle("Standard Deviation NIR 2022 viridis")
+ggtitle("Standard Deviation NIR 2019 viridis")
+
+(ggpsdnir2018 + ggpsdpc1_2018) / (ggpsdnir2019 + ggpsdpc1_2019)
 
