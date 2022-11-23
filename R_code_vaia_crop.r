@@ -12,20 +12,27 @@ setwd("C:/telerilevamento_exam/vaia_crop_02") # Windows
 
 vlist2018 <- list.files(pattern="T32TPS_2018")
 vimport2018 <- lapply(vlist2018, raster)
-prevaia2018 <- brick(vimport2018[[4]], vimport2018[[3]], vimport2018[[2]])
+prevaia2018 <- brick(vimport2018[[4]], vimport2018[[3]], vimport2018[[2]], vimport2018[[1]])
 
 vlist2019 <- list.files(pattern="T32TPS_2019")
 vimport2019 <- lapply(vlist2019, raster)
-postvaia2019 <- brick(vimport2019[[4]], vimport2019[[3]], vimport2019[[2]])
+postvaia2019 <- brick(vimport2019[[4]], vimport2019[[3]], vimport2019[[2]], vimport2019[[1]])
 
 # layer 1 = NIR
 # layer 2 = red
 # layer 3 = green
+# layer 4 = blue
 
 # prevaia2018res <- aggregate(prevaia2018, fact=10)
 # postvaia2019res <- aggregate(postvaia2019, fact=10)
 
+# nc = natural color
 # cir = color infrared
+
+ggpnc2018 <- ggRGB(prevaia2018, 2, 3, 4, stretch="lin")
+ggpnc2019 <- ggRGB(postvaia2019, 2, 3, 4, stretch="lin")
+
+ggpnc2018 + ggpnc2019
 
 ggpcir2018 <- ggRGB(prevaia2018, 1, 2, 3, stretch="lin")
 ggpcir2019 <- ggRGB(postvaia2019, 1, 2, 3, stretch="lin")
@@ -71,40 +78,54 @@ ndvi2019 = dvi2019 / (postvaia2019[[1]] + postvaia2019[[2]])
 
 ggpndvi2018 <- ggplot() +
 geom_raster(ndvi2018, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "viridis") +
-ggtitle("NDVI_2018")
+scale_fill_viridis(option = "inferno") +
+ggtitle("NDVI prevaia2018")
 
 ggpndvi2019 <- ggplot() +
 geom_raster(ndvi2019, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "viridis") +
-ggtitle("NDVI_2019")
+scale_fill_viridis(option = "inferno") +
+ggtitle("NDVI postvaia2019")
 
 ggpndvi2018 + ggpndvi2019
 
 ndvi_dif = ndvi2018 - ndvi2019
-cld <- colorRampPalette(c('blue','white','red'))(100) 
+# cld <- colorRampPalette(c('blue','white','red'))(100) 
 
 # pdf("VAIA_dvi_diff_2018_19.pdf")
-plot(ndvi_dif, col=cld) # extreme values are clouds
+# plot(ndvi_dif, col=cld) # extreme values are clouds
 # dev.off()
 
-ndvi_difc <- unsuperClass(ndvi_dif, nClasses=5)
+ggpndvi_dif <- ggplot() +
+geom_raster(ndvi_dif, mapping =aes(x=x, y=y, fill=layer)) +
+scale_fill_viridis(option = "inferno") +
+ggtitle("NDVI_dif")
 
-par(mfrow=c(1, 2))
-plot(ndvi_dif, col=cld)
-plot(ndvi_difc$map)
+ggpndvi_dif
 
-prevaia2018c <- unsuperClass(ndvi2018, nClasses=3)
-postvaia2019c <- unsuperClass(ndvi2019, nClasses=3)
+ndvi_difc <- unsuperClass(ndvi_dif, nClasses=3)
 
-freq(prevaia2018c$map)
+# par(mfrow=c(1, 2))
+# plot(ndvi_dif, col=cld)
+# plot(ndvi_difc$map)
+
+ggpndvi_difc <- ggplot() +
+geom_raster(ndvi_difc$map, mapping =aes(x=x, y=y, fill=class)) +
+scale_fill_viridis(option = "inferno") +
+ggtitle("NDVI_dif_classes")
+
+ggpndvi_difc
+
+# prevaia2018c <- unsuperClass(ndvi2018, nClasses=3)
+# postvaia2019c <- unsuperClass(ndvi2019, nClasses=3)
+
+# freq(prevaia2018c$map)
 # class 1  1090655 water, ice, hard soil
 # class 2  9894220 vegetation
 # class 3  2698647 soft soil
 
 # total pixel = 13691664
 
-freq(postvaia2019c$map)
+# freq(postvaia2019c$map)
 
 # class 1   1387056 water, ice, hard soil
 # class 2   2939317 soft soil
@@ -112,9 +133,9 @@ freq(postvaia2019c$map)
 
 # total pixel = 13691664
 
-par(mfrow=c(1, 2))
-plot(prevaia2018c$map)
-plot(postvaia2019c$map)
+# par(mfrow=c(1, 2))
+# plot(prevaia2018c$map)
+# plot(postvaia2019c$map)
 
 # pdf("VAIA_class_2018_19.pdf")
 # par(mfrow=c(2, 2))
@@ -124,11 +145,11 @@ plot(postvaia2019c$map)
 # plot(postvaia2019c$map)
 # dev.off()
 
-perc_veg_2018 <- 9894220 * 100 / 13691664
-perc_softsoil_2018 <- 2698647 * 100 / 13691664
+# perc_veg_2018 <- 9894220 * 100 / 13691664
+# perc_softsoil_2018 <- 2698647 * 100 / 13691664
 
-perc_veg_2019 <- 9362251 * 100 / 13691664
-perc_softsoil_2019 <- 2939317 * 100 / 13691664
+# perc_veg_2019 <- 9362251 * 100 / 13691664
+# perc_softsoil_2019 <- 2939317 * 100 / 13691664
 
 # perc_veg_2018 = 72.26455
 # perc_softsoil_2018 = 19.71015
@@ -136,14 +157,14 @@ perc_softsoil_2019 <- 2939317 * 100 / 13691664
 # perc_veg_2019 = 68.37921
 # perc_softsoil_2019 = 21.46793
 
-class <- c("Vegetation","soft soil")
-percent_2018 <- c(72.26, 19.71)
-percent_2019 <- c(68.38, 21.47)
+# class <- c("Vegetation","soft soil")
+# percent_2018 <- c(72.26, 19.71)
+# percent_2019 <- c(68.38, 21.47)
 
-multitemporal <- data.frame(class, percent_2018, percent_2019)
-multitemporal
+# multitemporal <- data.frame(class, percent_2018, percent_2019)
+# multitemporal
 
-View(multitemporal)
+# View(multitemporal)
 
 
 # par(mfrow=c(1, 2))
