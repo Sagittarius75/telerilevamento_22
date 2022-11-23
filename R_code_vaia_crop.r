@@ -115,6 +115,8 @@ ggtitle("NDVI_dif_classes")
 
 ggpndvi_difc
 
+freq(ndvi_difc$map)
+
 # prevaia2018c <- unsuperClass(ndvi2018, nClasses=3)
 # postvaia2019c <- unsuperClass(ndvi2019, nClasses=3)
 
