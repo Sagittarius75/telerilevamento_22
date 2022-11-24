@@ -37,6 +37,27 @@ setwd("C:/telerilevamento_exam/vaia_crop_02")  # Windows
 
 
 
+##### let's write a Function to create ggplot images #####
+
+ggplot_img <- function(temp_obj, temp_title)  
+      # 'function' Function (base package) creates a function in R. The Arguments 'temp_obj' 
+      # and 'temp_title' are the ones we pass. We return 'ggp_obj'
+{
+  ggp_obj <- ggplot() +
+  geom_raster(temp_obj, mapping =aes(x=x, y=y, fill=layer)) +
+  scale_fill_viridis(option = "inferno") +
+  ggtitle(temp_title)
+        # 'ggplot Function (ggplot2 package) creates a new ggplot. 
+        # 'ggplot()' initializes a ggplot object.
+        # geom_raster Function (ggplot2 package) permits to create the rectangle for plotting.
+        # 'scale_fill_viridis' Function (viridis package) is used to choose a Viridis Color 
+        # Scales for ggplot2.
+        # 'ggtitle' Function (ggplot2 package) permits us to write a title to the plot
+  return(ggp_obj)  # we return the object to the main code, associating the final object.
+}
+
+
+
 ### let's import sentinel-2 data from september 2018 and create our multi-layer ###
 ### raster object: ###
 
@@ -111,21 +132,10 @@ dvi2019 = postvaia2019[[1]] - postvaia2019[[2]]
 
 ### let's plot them ###
 
-ggpdvi2018 <- ggplot() +
-geom_raster(dvi2018, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
-ggtitle("DVI prevaia2018")
-        # 'ggplot Function (ggplot2 package) creates a new ggplot. 
-        # 'ggplot()' initializes a ggplot object.
-        # geom_raster Function (ggplot2 package) permits to create the rectangle for plotting.
-        # 'scale_fill_viridis' Function (viridis package) is used to choose a Viridis Color 
-        # Scales for ggplot2.
-        # 'ggtitle' Function (ggplot2 package) permits us to write a title to the plot
-
-ggpdvi2019 <- ggplot() +
-geom_raster(dvi2019, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
-ggtitle("DVI postvaia2019")
+ggpdvi2018 <- ggplot_img(dvi2018, "DVI preVaia 2018")   
+        # we call the 'ggplot_img' Function created at the beginning. The argument
+        # we pass are the object and the title.
+ggpdvi2019 <- ggplot_img(dvi2019, "DVI postVaia 2019")
 
 # pdf("VAIA_comparison.pdf")
 ggpdvi2018 + ggpdvi2019
@@ -138,10 +148,7 @@ dvi_dif = dvi2018 - dvi2019
 
 ### let's plot the result ###
 
-ggpdvi_dif <- ggplot() +
-geom_raster(dvi_dif, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
-ggtitle("DVI_dif")
+ggpdvi_dif <- ggplot_img(dvi_dif, "DVI 2018-19 difference")  
 
 ggpdvi_dif
 
@@ -155,15 +162,8 @@ ndvi2019 = dvi2019 / (postvaia2019[[1]] + postvaia2019[[2]])
 
 ### let's plot them ###
 
-ggpndvi2018 <- ggplot() +
-geom_raster(ndvi2018, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
-ggtitle("NDVI prevaia2018")
-
-ggpndvi2019 <- ggplot() +
-geom_raster(ndvi2019, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
-ggtitle("NDVI postvaia2019")
+ggpndvi2018 <- ggplot_img(ndvi2018, "NDVI preVaia 2018")  
+ggpndvi2019 <- ggplot_img(ndvi2019, "NDVI postVaia 2019")  
 
 ggpndvi2018 + ggpndvi2019
 
@@ -174,10 +174,7 @@ ndvi_dif = ndvi2018 - ndvi2019
 
 ### let's plot the result ###
 
-ggpndvi_dif <- ggplot() +
-geom_raster(ndvi_dif, mapping =aes(x=x, y=y, fill=layer)) +
-scale_fill_viridis(option = "inferno") +
-ggtitle("NDVI_dif")
+ggpndvi_dif <- ggplot_img(ndvi_dif, "NDVI 2018-19 difference")  
 
 ggpndvi_dif
 
