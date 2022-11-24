@@ -109,6 +109,8 @@ dvi2018 = prevaia2018[[1]] - prevaia2018[[2]]
         # DVI is the result of the difference between NIR band and RED band
 dvi2019 = postvaia2019[[1]] - postvaia2019[[2]]
 
+### let's plot them ###
+
 ggpdvi2018 <- ggplot() +
 geom_raster(dvi2018, mapping =aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "inferno") +
@@ -129,7 +131,12 @@ ggtitle("DVI postvaia2019")
 ggpdvi2018 + ggpdvi2019
 # dev.off()
 
+
+### let's calculate the difference between DVI 2018 and DVI 2019 ###
+
 dvi_dif = dvi2018 - dvi2019
+
+### let's plot the result ###
 
 ggpdvi_dif <- ggplot() +
 geom_raster(dvi_dif, mapping =aes(x=x, y=y, fill=layer)) +
@@ -139,10 +146,14 @@ ggtitle("DVI_dif")
 ggpdvi_dif
 
 
-# let's calculate NDVI
+
+### let's calculate the Normalized Difference Vegetation Index (NDVI) ###
 
 ndvi2018 = dvi2018 / (prevaia2018[[1]] + prevaia2018[[2]])
+          # NDVI is the ratio between the DVI index and the NIR band and RED band sum
 ndvi2019 = dvi2019 / (postvaia2019[[1]] + postvaia2019[[2]])
+
+### let's plot them ###
 
 ggpndvi2018 <- ggplot() +
 geom_raster(ndvi2018, mapping =aes(x=x, y=y, fill=layer)) +
@@ -156,7 +167,12 @@ ggtitle("NDVI postvaia2019")
 
 ggpndvi2018 + ggpndvi2019
 
+
+### let's calculate the difference between NDVI 2018 and NDVI 2019 ###
+
 ndvi_dif = ndvi2018 - ndvi2019
+
+### let's plot the result ###
 
 ggpndvi_dif <- ggplot() +
 geom_raster(ndvi_dif, mapping =aes(x=x, y=y, fill=layer)) +
@@ -165,8 +181,20 @@ ggtitle("NDVI_dif")
 
 ggpndvi_dif
 
+
+
+### let's classify the NDVI 2018-19 difference using 3 classes ###
+
 set.seed(2)
+        # Set a seed in R is used for reproducing the same output of simulation studies. 
+  
 ndvi_difc <- unsuperClass(ndvi_dif, nClasses=3)
+        # 'unsuperClass' Function (RStoolbox package) permits to have an Unsupervised Classification.
+        # Unsupervised classification is where the outcomes (groupings of pixels with common characteristics) 
+        # are based on the software analysis of an image without the user providing sample classes. 
+        # The computer uses techniques to determine which pixels are related and groups them into classes
+
+### let's plot it ###
 
 ggpndvi_difc <- ggplot() +
 geom_raster(ndvi_difc$map, mapping =aes(x=x, y=y, fill=class)) +
@@ -176,23 +204,37 @@ ggtitle("NDVI_dif_classes")
 ggpndvi_difc
 
 freq(ndvi_difc$map)
+        # 'freq' Function tells us the number of pixel for each class:
+        # in our values the class 1 is made by 364324 pixels and indicates the forest damage
 
-# class 1: 364324 pixels - forest damage
+
+### let's associate some values we need for calculations ###
 
 fstdmgpx <- 364324  # forest damage
 imgtotpx <- 3607749  # image total number of pixels
 imgarea <- 360.77  # image area (km squared)
 
+
+### let's calculate the forest damage percent and the area damage (km squared)
+
 fstdmgperc <- fstdmgpx * 100 / imgtotpx  # forest damage (percent)
 imgareadmg <- imgarea * fstdmgperc / 100  # image area damage km squared
 
+
+### let's create a table results with our values ###
+
 content <- c("Forest damage (%)", "img area (km squared)", "img area damage (km squared)")
+        # we create a first vector with the content
 values <- c(fstdmgperc, imgarea, imgareadmg)
+        # we create a second vector with the values
 
 tableresults <- data.frame(content, values)
-tableresults
+        # we create the final data frame associating the two vectors we created.
+tableresults # we call the data frame
 
-View(tableresults)
+View(tableresults) # we display our data frame as a table results
+
+
 
 # prevaia2018c <- unsuperClass(ndvi2018, nClasses=3)
 # postvaia2019c <- unsuperClass(ndvi2019, nClasses=3)
