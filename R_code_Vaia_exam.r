@@ -1,22 +1,31 @@
-##### Forest damage estimation after the Vaia storm (26-30 oct 2018) between Bolzano city and Predazzo town. Study area = 360.77 km squared #####
+##### Forest damage estimation after the Vaia storm (26-30 oct 2018) #####
+##### between Bolzano city and Predazzo town. Study area = 360.77 km squared #####
 
 # install.packages("PACKAGE NAME")
 
-library(raster) # Geographic Data Analysis and Modeling:
-                # Reading, writing, manipulating, analyzing and modeling of spatial data
+library(raster) 
+          # Geographic Data Analysis and Modeling:
+          # Reading, writing, manipulating, analyzing and modeling of spatial data
 
-library(RStoolbox)  # Tools for Remote Sensing Data Analysis:
-                    # Toolbox for remote sensing image processing and analysis such as calculating spectral indices, 
-                    # principal component transformation, unsupervised and supervised classification or fractional cover analyses
+library(RStoolbox)  
+          # Tools for Remote Sensing Data Analysis: 
+          # Toolbox for remote sensing image processing and analysis such as calculating 
+          # spectral indices, principal component transformation, unsupervised and 
+          # supervised classification or fractional cover analyses
 
-library(ggplot2)  # Create Elegant Data Visualisations Using the Grammar of Graphics:
-                  # A system for 'declaratively' creating graphics, based on "The Grammar of Graphics"
+library(ggplot2)  
+          # Create Elegant Data Visualisations Using the Grammar of Graphics:
+          # A system for 'declaratively' creating graphics, based on "The Grammar of Graphics"
 
-library(patchwork)  # The Composer of Plots:
-                    # The 'ggplot2' package provides a strong API (Application Programming Interfaces) for sequentially building up a plot
+library(patchwork)  
+          # The Composer of Plots:
+          # The 'ggplot2' package provides a strong API (Application Programming Interfaces) 
+          # for sequentially building up a plot
 
-library(viridis)  # Colorblind-Friendly Color Maps for R:
-                  # Color maps designed to improve graph readability for readers with common forms of color blindness and/or color vision deficiency
+library(viridis)  
+          # Colorblind-Friendly Color Maps for R:
+          # Color maps designed to improve graph readability for readers with common forms 
+          # of color blindness and/or color vision deficiency
 
 
 
@@ -28,15 +37,21 @@ setwd("C:/telerilevamento_exam/vaia_crop_02")  # Windows
 
 
 
-### let's import sentinel-2 data from september 2018 and create our multi-layer raster object: ###
+### let's import sentinel-2 data from september 2018 and create our multi-layer ###
+### raster object: ###
 
-vlist2018 <- list.files(pattern="T32TPS_2018")  # 'list.files' Function produces a vector of the names of files which are in the working directory we chose.
-                                                # The Argument 'pattern' tells the initials of the file
+vlist2018 <- list.files(pattern="T32TPS_2018")  
+        # 'list.files' Function (base package) produces a vector 
+        # of the names of files which are in the working directory 
+        # we chose. The Argument 'pattern' tells the initials of the file
 
-vimport2018 <- lapply(vlist2018, raster)  # 'lapply' applies a Function over a List or Vector. The Function we apply to the list is 'raster'
-prevaia2018 <- brick(vimport2018[[4]], vimport2018[[3]], vimport2018[[2]], vimport2018[[1]])  # 'brick' Function creates a RasterBrick object.
-                                                                                              # A RasterBrick is a multi-layer raster object
-                                                                                              # in 'prevaia2018' object we decide the order of layers (4 out of 5)
+vimport2018 <- lapply(vlist2018, raster)  
+        # 'lapply' Function (raster package) applies a Function over a List or Vector. 
+        # The Function we apply to the list is 'raster'
+
+prevaia2018 <- brick(vimport2018[[4]], vimport2018[[3]], vimport2018[[2]], vimport2018[[1]])  
+        # 'brick' Function (raster package) creates a RasterBrick object. A RasterBrick is a
+        # multi-layer raster object in 'prevaia2018' object we decide the order of layers (4 out of 5)
 
 ### let's do the same with sentinel-2 data from september 2019 ###
 
@@ -52,21 +67,24 @@ postvaia2019 <- brick(vimport2019[[4]], vimport2019[[3]], vimport2019[[2]], vimp
 
 ### changing resolution: ###
 
-# prevaia2018res <- aggregate(prevaia2018, fact=10) --> the 'aggregate' Function is used to change the resolution of the resulting raster.
-                                                      # the Argument 'fact' decides the new resolution, if 10 means: (10*10m resolution becomes 100*100m resolution)
+# prevaia2018res <- aggregate(prevaia2018, fact=10)
+        # the 'aggregate' Function is used to change the resolution of the resulting raster.
+        # the Argument 'fact' decides the new resolution, if 'fact=10 means: 
+        # (10m*10m resolution becomes 100m*100m resolution)
 
 # postvaia2019res <- aggregate(postvaia2019, fact=10)
 
 
-### let's plot using 'ggplot2' and 'patchwork' package our first objects. We plot two different band combinations ###
+### let's plot using 'ggplot2' and 'patchwork' package our first objects. We plot two ###
+### different band combinations ###
 
 # nc = natural color band combinations:
 
-ggpnc2018 <- ggRGB(prevaia2018, 2, 3, 4, stretch="lin")  # 'ggRGB' Function creates ggplot2 Raster Plots with RGB from 3 RasterLayers. 
-                                                         # The argument 'stretch' can be used to enhance the imagery.
-
-                                                         # In the object 'ggpnc2018' we pass red, green, blue bands (layers 2, 3, 4) to the red, green and blue
-                                                         # which means Natural Color band combinations
+ggpnc2018 <- ggRGB(prevaia2018, 2, 3, 4, stretch="lin")  
+        # 'ggRGB' Function (RStoolbox package) creates Raster Plots with RGB from 3 RasterLayers. 
+        # The argument 'stretch' can be used to enhance the imagery. In the object 'ggpnc2018' 
+        # we pass red, green, blue bands (layers 2, 3, 4) to the red, green and blue
+        # which means Natural Color band combinations
 
 ggpnc2019 <- ggRGB(postvaia2019, 2, 3, 4, stretch="lin")
 
@@ -75,12 +93,14 @@ ggpnc2018 + ggpnc2019 # thanks to 'patchwork' package we can plot our objects
 
 # cir = color infrared band combinations:
 
-ggpcir2018 <- ggRGB(prevaia2018, 1, 2, 3, stretch="lin") # In the object 'ggpcir2018' we pass near infrared, red, green bands (layers 1, 2, 3) 
-                                                         # to the red, green and blue which means Color Infared band combinations
+ggpcir2018 <- ggRGB(prevaia2018, 1, 2, 3, stretch="lin") 
+        # In the object 'ggpcir2018' we pass near infrared, red, green bands (layers 1, 2, 3) 
+        # to the red, green and blue which means Color Infared band combinations
 
 ggpcir2019 <- ggRGB(postvaia2019, 1, 2, 3, stretch="lin")
 
 ggpcir2018 + ggpcir2019
+
 
 
 
