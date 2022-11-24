@@ -1,8 +1,16 @@
+# Forest damage estimation after the Vaia storm (26-30 oct 2018) between Bolzano city and Predazzo town (360.77 km squared)
 
+# install.packages("PACKAGE NAME")
 
-library(raster)
-library(RStoolbox)
-library(ggplot2)
+library(raster) # Geographic Data Analysis and Modeling:
+                # Reading, writing, manipulating, analyzing and modeling of spatial data
+
+library(RStoolbox)  # Tools for Remote Sensing Data Analysis:
+                    # Toolbox for remote sensing image processing and analysis such as calculating spectral indices, 
+                    # principal component transformation, unsupervised and supervised classification or fractional cover analyses
+
+library(ggplot2)  # Create Elegant Data Visualisations Using the Grammar of Graphics:
+                  # A system for 'declaratively' creating graphics, based on "The Grammar of Graphics".
 library(patchwork)
 library(viridis)
 
@@ -109,18 +117,18 @@ freq(ndvi_difc$map)
 
 fstdmgpx <- 364324  # forest damage
 imgtotpx <- 3607749  # image total number of pixels
-imgarea <- 360.77  # image area (km square)
+imgarea <- 360.77  # image area (km squared)
 
 fstdmgperc <- fstdmgpx * 100 / imgtotpx  # forest damage (percent)
-imgareadmg <- imgarea * fstdmgperc / 100  # image area damage km square
+imgareadmg <- imgarea * fstdmgperc / 100  # image area damage km squared
 
-class <- c("Forest damage (%)", "img area (km square)", "img area damage (km square)")
+content <- c("Forest damage (%)", "img area (km squared)", "img area damage (km squared)")
 values <- c(fstdmgperc, imgarea, imgareadmg)
 
-multitemporal <- data.frame(class, values)
-multitemporal
+tableresults <- data.frame(content, values)
+tableresults
 
-View(multitemporal)
+View(tableresults)
 
 # prevaia2018c <- unsuperClass(ndvi2018, nClasses=3)
 # postvaia2019c <- unsuperClass(ndvi2019, nClasses=3)
