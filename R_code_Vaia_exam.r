@@ -1,4 +1,4 @@
-##### Forest damage estimation after the Vaia storm (26-30 oct 2018) between Bolzano city and Predazzo town (360.77 km squared) #####
+##### Forest damage estimation after the Vaia storm (26-30 oct 2018) between Bolzano city and Predazzo town. Study area = 360.77 km squared #####
 
 # install.packages("PACKAGE NAME")
 
