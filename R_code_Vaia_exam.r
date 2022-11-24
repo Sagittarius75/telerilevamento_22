@@ -81,7 +81,7 @@ postvaia2019 <- brick(vimport2019[[4]], vimport2019[[3]], vimport2019[[2]], vimp
 # nc = natural color band combinations:
 
 ggpnc2018 <- ggRGB(prevaia2018, 2, 3, 4, stretch="lin")  
-        # 'ggRGB' Function (RStoolbox package) creates Raster Plots with RGB from 3 RasterLayers. 
+        # 'ggRGB' Function (RStoolbox package) creates ggplot2 Raster Plots with RGB from 3 RasterLayers. 
         # The argument 'stretch' can be used to enhance the imagery. In the object 'ggpnc2018' 
         # we pass red, green, blue bands (layers 2, 3, 4) to the red, green and blue
         # which means Natural Color band combinations
@@ -103,19 +103,27 @@ ggpcir2018 + ggpcir2019
 
 
 
+### let's calculate the Difference Vegetation Index (DVI) ###
 
 dvi2018 = prevaia2018[[1]] - prevaia2018[[2]]
+        # DVI is the result of the difference between NIR band and RED band
 dvi2019 = postvaia2019[[1]] - postvaia2019[[2]]
 
 ggpdvi2018 <- ggplot() +
 geom_raster(dvi2018, mapping =aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "inferno") +
-ggtitle("DVI_prevaia2018")
+ggtitle("DVI prevaia2018")
+        # 'ggplot Function (ggplot2 package) creates a new ggplot. 
+        # 'ggplot()' initializes a ggplot object.
+        # geom_raster Function (ggplot2 package) permits to create the rectangle for plotting.
+        # 'scale_fill_viridis' Function (viridis package) is used to choose a Viridis Color 
+        # Scales for ggplot2.
+        # 'ggtitle' Function (ggplot2 package) permits us to write a title to the plot
 
 ggpdvi2019 <- ggplot() +
 geom_raster(dvi2019, mapping =aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "inferno") +
-ggtitle("DVI_postvaia2019")
+ggtitle("DVI postvaia2019")
 
 # pdf("VAIA_comparison.pdf")
 ggpdvi2018 + ggpdvi2019
