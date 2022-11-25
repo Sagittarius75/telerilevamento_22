@@ -4,7 +4,8 @@ ggplot_img <- function(temp_obj, temp_title)  {
       # 'function' Function (base package) creates a function in R. The Arguments 'temp_obj' 
       # and 'temp_title' are the ones we pass. We return 'ggp_obj'
 
-    if (typeof(temp_obj) == "S4")  {
+    if (typeof(temp_obj) == "S4")  {  # we use the conditional 'if'... 'else if' separating
+                                      # instructions depending on the type of object we work
         ggp_obj <- ggplot() +
         geom_raster(temp_obj, mapping =aes(x=x, y=y, fill=layer)) +
         scale_fill_viridis(option = "inferno") +
