@@ -226,7 +226,7 @@ fstdmgarea <- area * fstdmgperc / 100  # image area damage km squared
 
 ### let's create a table results with our values ###
 
-content <- c("area (km squared)", "Forest damage (%)", "Forest damage area (km squared)")
+content <- c("area (km squared)", "Forest damage percent", "Forest damage area (km squared)")
         # we create a first vector with the content
 values <- c(area, fstdmgperc, fstdmgarea)
         # we create a second vector with the values
