@@ -215,20 +215,20 @@ freq(ndvi_difc$map)
 
 fstdmgpx <- 364324  # forest damage
 imgtotpx <- 3607749  # image total number of pixels
-imgarea <- 360.77  # image area (km squared)
+area <- 360.77  # image area (km squared)
 
 
 ### let's calculate the forest damage percent and the area damage (km squared)
 
 fstdmgperc <- fstdmgpx * 100 / imgtotpx  # forest damage (percent)
-imgareadmg <- imgarea * fstdmgperc / 100  # image area damage km squared
+fstdmgarea <- area * fstdmgperc / 100  # image area damage km squared
 
 
 ### let's create a table results with our values ###
 
-content <- c("Forest damage (%)", "img area (km squared)", "img area damage (km squared)")
+content <- c("area (km squared)", "Forest damage (%)", "Forest damage area (km squared)")
         # we create a first vector with the content
-values <- c(fstdmgperc, imgarea, imgareadmg)
+values <- c(area, fstdmgperc, fstdmgarea)
         # we create a second vector with the values
 
 tableresults <- data.frame(content, values)
