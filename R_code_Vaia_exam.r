@@ -118,8 +118,9 @@ ggpnc2018 <- ggRGB(prevaia2018, 2, 3, 4, stretch="lin")
 
 ggpnc2019 <- ggRGB(postvaia2019, 2, 3, 4, stretch="lin")
 
+# pdf("VAIA_nc_comparison.pdf")
 ggpnc2018 + ggpnc2019 # thanks to 'patchwork' package we can plot our objects
-
+# dev.off()
 
 # cir = color infrared band combinations:
 
@@ -146,9 +147,7 @@ ggpdvi2018 <- ggplot_img(dvi2018, "DVI preVaia 2018")
         # we pass are the object and the title.
 ggpdvi2019 <- ggplot_img(dvi2019, "DVI postVaia 2019")
 
-# pdf("VAIA_comparison.pdf")
 ggpdvi2018 + ggpdvi2019
-# dev.off()
 
 
 ### let's calculate the difference between DVI 2018 and DVI 2019 ###
