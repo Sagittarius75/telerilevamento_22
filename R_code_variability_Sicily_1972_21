@@ -68,7 +68,7 @@ sic2021sd <- focal(sic2021pc1, matrix(1/9, 3, 3), fun=sd)
 g1sd <- ggplot() +
 geom_raster(sic1972sd, mapping=aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
-ggtitle("SD Sicily 2021")
+ggtitle("SD Sicily 1972")
 
 g2sd <- ggplot() +
 geom_raster(sic1984sd, mapping=aes(x=x, y=y, fill=layer)) +
