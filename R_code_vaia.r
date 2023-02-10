@@ -1,4 +1,5 @@
 
+
 library(raster)
 library(RStoolbox)
 library(ggplot2)
@@ -134,18 +135,18 @@ plot(postvaia2022c$map)
 # dev.off()
 
 perc_veg_2018 <- 790455 * 100 / 1205604
-perc_urb_2018 <- (123785 + 291363) * 100 / 1205604
+perc_urbsoil_2018 <- (123785 + 291363) * 100 / 1205604
 
 perc_veg_2022 <- 560694 * 100 / 1205604
-perc_urb_2022 <- (257416 + 387494) * 100 / 1205604
+perc_urbsoil_2022 <- (257416 + 387494) * 100 / 1205604
 
 # perc_veg_2018 = 65.56506
-# perc_urb_2018 = 34.43486
+# perc_urbsoil_2018 = 34.43486
 
 # perc_veg_2022 = 46.50731
-# perc_urb_2022 = 53.49269
+# perc_urbsoil_2022 = 53.49269
 
-class <- c("Vegetation","Urban")
+class <- c("Vegetation","Urban/Soil")
 percent_2018 <- c(65.56, 34.44)
 percent_2022 <- c(46.51, 53.49)
 
@@ -211,6 +212,14 @@ par(mfrow=c(1,2))
 plot(sdnir2018, col=clsd)
 plot(sdnir2022, col=clsd)
 
+par(mfrow=c(3,3))
+plotRGB(prevaia2018res, r=4, g=3, b=2, stretch="lin")
+plot(prevaia2018c$map)
+plot(sdnir2018, col=clsd)
+plotRGB(postvaia2022res, r=4, g=3, b=2, stretch="lin")
+plot(postvaia2022c$map)
+plot(sdnir2022, col=clsd)
+
 # plotting with ggplot and viridis
 
 ggpnir2018 <- ggplot() +
@@ -232,5 +241,7 @@ ggpsdnir2022 <- ggplot() +
 geom_raster(sdnir2022, mapping = aes(x=x, y=y, fill=layer)) +
 scale_fill_viridis(option = "viridis") +
 ggtitle("Standard Deviation NIR 2022 viridis")
+
+(ggpnir2018 + ggpsdnir2018) / (ggpnir2022 + ggpsdnir2022)
 
 
