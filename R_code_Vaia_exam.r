@@ -37,7 +37,7 @@ setwd("C:/telerilevamento_exam/vaia_crop_02")  # Windows
 
 
 
-##### let's write a Function to create ggplot images #####
+##### let's type a Function to create ggplot images #####
 
 ggplot_img <- function(temp_obj, temp_title)  {
       # 'function' Function (base package) creates a function in R. The Arguments 'temp_obj' 
@@ -73,7 +73,7 @@ ggplot_img <- function(temp_obj, temp_title)  {
 vlist2018 <- list.files(pattern="T32TPS_2018")  
         # 'list.files' Function (base package) produces a vector 
         # of the names of files which are in the working directory 
-        # we chose. The Argument 'pattern' tells the initials of the file
+        # we chose. The Argument 'pattern' says the initials of the file
 
 vimport2018 <- lapply(vlist2018, raster)  
         # 'lapply' Function (raster package) applies a Function over a List or Vector. 
