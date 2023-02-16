@@ -19,6 +19,8 @@ met1_distill<-metrics_distill(fiespa_occ) # we can distill the information
 
 map_single(met1_distill,p1custom) #We then display
 
+legend_timecycle(pal, origin_label = "1 jan")
+
 data("fisher_ud")  
 
 m2 <- metrics_pull(fisher_ud)
