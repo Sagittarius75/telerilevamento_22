@@ -1,4 +1,4 @@
-install.packages("colorist")
+#install.packages("colorist")
 library(colorist)
 library(ggplot2)
 
